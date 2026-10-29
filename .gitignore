@@ -1,0 +1,32 @@
+# Maven build output
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+
+# Logs and temporary files
+*.log
+logs/
+*.tmp
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local environment overrides (never commit real passwords)
+application-local.properties
+.env
+
+# Test / coverage output
+surefire-reports/

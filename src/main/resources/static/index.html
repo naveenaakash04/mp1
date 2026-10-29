@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart Parking Allocation System dashboard - Spring Boot, MySQL, Java">
+    <title>Smart Parking Allocation System</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="app-shell">
+
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark" aria-hidden="true">P</div>
+            <div>
+                <h1>Smart Parking</h1>
+                <p>Allocation &amp; reservation dashboard</p>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <div class="clock-chip" id="clockChip" title="Simulated application time">
+                <span class="dot"></span>
+                <span id="clockText">Loading clock...</span>
+            </div>
+            <button type="button" class="btn btn-ghost" id="refreshBtn">Refresh</button>
+        </div>
+    </header>
+
+    <nav class="section-nav" aria-label="Dashboard sections">
+        <a href="#overview" class="active">Overview</a>
+        <a href="#spaces">Parking spaces</a>
+        <a href="#vehicles">Vehicles</a>
+        <a href="#reservations">Reservations</a>
+        <a href="#waiting">Waiting list</a>
+        <a href="#history">History</a>
+    </nav>
+
+    <main>
+
+        <!-- ============================ OVERVIEW ============================ -->
+        <section id="overview" class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Live overview</p>
+                    <h2>Parking at a glance</h2>
+                    <p class="muted">Counts are calculated from current reservations at the simulated time.</p>
+                </div>
+                <button type="button" class="btn btn-secondary" id="expireBtn">Expire unclaimed now</button>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card">
+                    <span class="stat-label">Total spaces</span>
+                    <strong id="statTotal">--</strong>
+                    <small id="statLots">3 lots</small>
+                </article>
+                <article class="stat-card stat-available">
+                    <span class="stat-label">Available</span>
+                    <strong id="statAvailable">--</strong>
+                    <small>Ready to allocate</small>
+                </article>
+                <article class="stat-card stat-occupied">
+                    <span class="stat-label">Occupied</span>
+                    <strong id="statOccupied">--</strong>
+                    <small>Checked in</small>
+                </article>
+                <article class="stat-card stat-reserved">
+                    <span class="stat-label">Reserved</span>
+                    <strong id="statReserved">--</strong>
+                    <small>Active bookings</small>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">Active reservations</span>
+                    <strong id="statReservations">--</strong>
+                    <small>RESERVED + CHECKED_IN</small>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">Waiting list</span>
+                    <strong id="statWaiting">--</strong>
+                    <small>Priority queue</small>
+                </article>
+            </div>
+
+            <div class="two-column">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Parking lot overview</p>
+                            <h3>Three connected lots</h3>
+                        </div>
+                        <span class="pill" id="travelSummary">Dijkstra travel times</span>
+                    </div>
+                    <div id="lotsList" class="lots-list">
+                        <div class="loading">Loading parking lots...</div>
+                    </div>
+                </div>
+
+                <aside class="panel demo-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Demo controls</p>
+                            <h3>Simulated clock</h3>
+                        </div>
+                        <span class="pill" id="clockOffset">+0 min</span>
+                    </div>
+                    <p class="muted">
+                        Advance time to demonstrate reservation expiry, then let the waiting list
+                        automatically take the released space.
+                    </p>
+                    <div class="clock-buttons">
+                        <button type="button" class="btn btn-secondary" data-advance="15">+15 min</button>
+                        <button type="button" class="btn btn-secondary" data-advance="60">+60 min</button>
+                        <button type="button" class="btn btn-secondary" data-advance="180">+3 hours</button>
+                    </div>
+                    <div class="clock-actions">
+                        <button type="button" class="btn btn-ghost" id="resetClockBtn">Reset clock</button>
+                        <button type="button" class="btn btn-ghost" id="expireBtn2">Run expiry scan</button>
+                    </div>
+                    <div class="demo-note">
+                        <strong>Suggested demo</strong>
+                        <ol>
+                            <li>Register a car and reserve a space.</li>
+                            <li>Reserve every compatible space, then add a waiting request.</li>
+                            <li>Cancel or expire a reservation and watch the queue allocate it.</li>
+                        </ol>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ============================ SPACES ============================ -->
+        <section id="spaces" class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Visual layout</p>
+                    <h2>Parking spaces</h2>
+                    <p class="muted">Click any space to see its current reservation details.</p>
+                </div>
+                <div class="legend" aria-label="Space status legend">
+                    <span><i class="legend-dot available"></i>Available</span>
+                    <span><i class="legend-dot reserved"></i>Reserved</span>
+                    <span><i class="legend-dot occupied"></i>Occupied</span>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <label>
+                    Lot
+                    <select id="spaceLotFilter">
+                        <option value="">All lots</option>
+                    </select>
+                </label>
+                <label>
+                    Type
+                    <select id="spaceKindFilter">
+                        <option value="">All types</option>
+                        <option value="CAR">Car</option>
+                        <option value="TWO_WHEELER">Two-wheeler</option>
+                        <option value="ACCESSIBLE">Accessible</option>
+                    </select>
+                </label>
+                <label>
+                    Status
+                    <select id="spaceStatusFilter">
+                        <option value="">All statuses</option>
+                        <option value="AVAILABLE">Available</option>
+                        <option value="RESERVED">Reserved</option>
+                        <option value="OCCUPIED">Occupied</option>
+                    </select>
+                </label>
+                <label class="search-field">
+                    Search
+                    <input type="search" id="spaceSearch" placeholder="Space, lot or name">
+                </label>
+            </div>
+
+            <div id="spaceGrid" class="space-grid">
+                <div class="loading">Loading spaces...</div>
+            </div>
+        </section>
+
+        <!-- ============================ VEHICLES ============================ -->
+        <section id="vehicles" class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Vehicle management</p>
+                    <h2>Register a vehicle</h2>
+                    <p class="muted">Vehicle numbers are normalised (spaces removed, uppercase) and must be unique.</p>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="panel">
+                    <form id="vehicleForm" class="form-grid" novalidate>
+                        <label>
+                            Vehicle number
+                            <input type="text" id="vehicleNumber" name="vehicleNumber"
+                                   placeholder="TN01AB1234" maxlength="20" required>
+                        </label>
+                        <label>
+                            Owner name
+                            <input type="text" id="vehicleOwner" name="ownerName"
+                                   placeholder="Student / staff name" maxlength="100" required>
+                        </label>
+                        <label>
+                            Vehicle type
+                            <select id="vehicleType" name="type" required>
+                                <option value="CAR">Car</option>
+                                <option value="TWO_WHEELER">Two-wheeler</option>
+                            </select>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="vehiclePermit" name="accessibilityPermit">
+                            Accessibility permit holder
+                        </label>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Register vehicle</button>
+                            <span class="form-message" id="vehicleMessage" aria-live="polite"></span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Registered vehicles</p>
+                            <h3>Vehicle directory</h3>
+                        </div>
+                        <span class="pill" id="vehicleCount">0 vehicles</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Number</th>
+                                <th>Type</th>
+                                <th>Owner</th>
+                                <th>Permit</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="vehicleTableBody">
+                            <tr><td colspan="5" class="empty">No vehicles yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================ RESERVATIONS ============================ -->
+        <section id="reservations" class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Reservation management</p>
+                    <h2>Book a parking space</h2>
+                    <p class="muted">Leave the preferred space empty to let the backend choose the nearest compatible space.</p>
+                </div>
+            </div>
+
+            <div class="two-column reservation-layout">
+                <div class="panel">
+                    <form id="reservationForm" class="form-grid" novalidate>
+                        <label>
+                            Vehicle
+                            <select id="reservationVehicle" required>
+                                <option value="">Select a registered vehicle</option>
+                            </select>
+                        </label>
+                        <label>
+                            Preferred space (optional)
+                            <select id="reservationSpace">
+                                <option value="">Smart allocation (recommended)</option>
+                            </select>
+                        </label>
+                        <label>
+                            Start time
+                            <input type="datetime-local" id="reservationStart" required>
+                        </label>
+                        <label>
+                            End time
+                            <input type="datetime-local" id="reservationEnd" required>
+                        </label>
+                        <div class="form-actions form-actions-wrap">
+                            <button type="submit" class="btn btn-primary">Reserve best space</button>
+                            <button type="button" class="btn btn-secondary" id="joinWaitingBtn">Join waiting list</button>
+                            <span class="form-message" id="reservationMessage" aria-live="polite"></span>
+                        </div>
+                    </form>
+                    <p class="hint">
+                        A reservation starts as <strong>RESERVED</strong>. Check in when the vehicle arrives;
+                        check out to calculate the fee. Unclaimed reservations expire after the configured grace period.
+                    </p>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Reservation queue</p>
+                            <h3>Bookings</h3>
+                        </div>
+                        <label class="inline-filter">
+                            Status
+                            <select id="reservationStatusFilter">
+                                <option value="">All</option>
+                                <option value="RESERVED">Reserved</option>
+                                <option value="CHECKED_IN">Checked in</option>
+                                <option value="COMPLETED">Completed</option>
+                                <option value="CANCELLED">Cancelled</option>
+                                <option value="EXPIRED">Expired</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="table-wrap table-tall">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Vehicle</th>
+                                <th>Space</th>
+                                <th>Window</th>
+                                <th>Status</th>
+                                <th>Fee</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="reservationTableBody">
+                            <tr><td colspan="7" class="empty">No reservations yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================ WAITING LIST ============================ -->
+        <section id="waiting" class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Java PriorityQueue</p>
+                    <h2>Waiting list</h2>
+                    <p class="muted">Permit holders rank first, then requests by arrival time. Ties are broken by id.</p>
+                </div>
+                <button type="button" class="btn btn-secondary" id="processWaitingBtn">Process waiting list</button>
+            </div>
+
+            <div class="panel">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Vehicle</th>
+                            <th>Priority</th>
+                            <th>Requested window</th>
+                            <th>Arrived</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="waitingTableBody">
+                        <tr><td colspan="6" class="empty">The waiting list is empty.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================ HISTORY ============================ -->
+        <section id="history" class="section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Audit trail</p>
+                    <h2>Parking event history</h2>
+                    <p class="muted">Every reservation, cancellation, check-in, check-out and expiry is recorded.</p>
+                </div>
+                <label class="inline-filter">
+                    Search
+                    <input type="search" id="historySearch" placeholder="Vehicle, space or message">
+                </label>
+            </div>
+
+            <div class="panel">
+                <div class="table-wrap table-tall">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Event</th>
+                            <th>Vehicle</th>
+                            <th>Space</th>
+                            <th>Message</th>
+                            <th>Fee</th>
+                        </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                        <tr><td colspan="6" class="empty">No events yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <span>Smart Parking Allocation System</span>
+        <span>Java 17 · Spring Boot · MySQL · HTML/CSS/JavaScript</span>
+    </footer>
+</div>
+
+<div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<div id="spaceModal" class="modal-backdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="spaceModalTitle">
+        <button type="button" class="modal-close" id="spaceModalClose" aria-label="Close">×</button>
+        <p class="eyebrow">Parking space</p>
+        <h3 id="spaceModalTitle">Space</h3>
+        <div id="spaceModalBody" class="modal-body"></div>
+    </div>
+</div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
