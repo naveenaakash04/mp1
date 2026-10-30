@@ -1,0 +1,859 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Parking Allocation System - Mini Project Report</title>
+<style>
+  @page { size: A4; margin: 1in 0.9in 1in 0.9in; }
+  body { font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.15; color: #000; }
+  h1 { font-size: 20pt; text-align: center; margin: 18pt 0 6pt 0; }
+  h2 { font-size: 15pt; margin: 18pt 0 8pt 0; border-bottom: 1px solid #000; padding-bottom: 3pt; }
+  h3 { font-size: 13pt; margin: 14pt 0 6pt 0; }
+  h4 { font-size: 12pt; margin: 12pt 0 4pt 0; }
+  p { margin: 0 0 8pt 0; text-align: justify; }
+  ul, ol { margin: 0 0 8pt 0; padding-left: 22pt; }
+  li { margin-bottom: 3pt; }
+  table { border-collapse: collapse; width: 100%; margin: 8pt 0 12pt 0; font-size: 10.5pt; }
+  th, td { border: 1px solid #333; padding: 5px 7px; vertical-align: top; }
+  th { background: #e8e8e8; text-align: left; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 10pt; }
+  pre { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f4f4f4;
+        border: 1px solid #bbb; padding: 8pt; white-space: pre-wrap; margin: 8pt 0 12pt 0; }
+  .center { text-align: center; }
+  .page-break { page-break-before: always; }
+  .title-page { text-align: center; }
+  .title-page .college { font-size: 18pt; font-weight: bold; margin-top: 24pt; }
+  .report-title { font-size: 20pt; font-weight: bold; text-align: center; margin: 18pt 0 6pt 0; }
+  .title-page .sub { font-size: 13pt; margin-bottom: 2pt; }
+  .title-page .place { font-size: 12pt; margin-bottom: 26pt; }
+  .title-page .dept { font-size: 14pt; font-weight: bold; margin-bottom: 30pt; }
+  .title-page .course { font-size: 13pt; margin-top: 6pt; }
+  .title-page .submitted { font-size: 12pt; margin-top: 26pt; }
+  .title-page .month { font-size: 13pt; font-weight: bold; margin-top: 30pt; }
+  .names { width: 70%; margin: 10pt auto; font-size: 12pt; }
+  .names td { border: none; padding: 4pt; text-align: center; }
+  .figure { text-align: center; margin: 10pt 0 14pt 0; }
+  .figure img { width: 560px; height: 622px; border: 1px solid #777; }
+  .caption { font-size: 10.5pt; font-style: italic; margin-top: 4pt; text-align: center; }
+  .toc { font-size: 12pt; }
+  .toc td { border: none; padding: 2pt 4pt; }
+  .toc .num { width: 12%; }
+  .small { font-size: 10.5pt; }
+  .note { font-size: 10.5pt; background: #f7f7f7; border-left: 3px solid #666; padding: 6pt 8pt; }
+</style>
+</head>
+<body>
+
+<!-- ================= TITLE PAGE ================= -->
+<div class="title-page">
+  <div class="college">KONGU ENGINEERING COLLEGE</div>
+  <div class="sub">(Autonomous)</div>
+  <div class="place">PERUNDURAI, ERODE &ndash; 638 060</div>
+
+  <div class="dept">DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING</div>
+
+  <div class="report-title">SMART PARKING ALLOCATION SYSTEM</div>
+  <div class="course">A Mini Project Report</div>
+  <div class="course">24GEP31 &ndash; Mini Project</div>
+
+  <div class="submitted">Submitted by</div>
+  <table class="names">
+    <tr><td><b>NITHIESH M</b></td><td>Register No: ______________</td></tr>
+    <tr><td><b>[Team Member Name]</b></td><td>Register No: ______________</td></tr>
+  </table>
+
+  <div class="course">Academic Year 2025 &ndash; 2026</div>
+  <div class="month">OCTOBER 2026</div>
+</div>
+
+<!-- ================= CERTIFICATE ================= -->
+<div class="center">
+  <div style="font-size:14pt;font-weight:bold;">KONGU ENGINEERING COLLEGE</div>
+  <div style="font-size:12pt;">(Autonomous)</div>
+  <div style="font-size:12pt;">PERUNDURAI, ERODE &ndash; 638 060</div>
+  <div style="font-size:13pt;font-weight:bold;margin-top:8pt;">DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING</div>
+</div>
+
+<div class="center" style="font-size:15pt;font-weight:bold;margin:18pt 0 8pt 0;page-break-before:always;">BONAFIDE CERTIFICATE</div>
+
+<p>This is to certify that the Mini Project report entitled <b>&ldquo;Smart Parking Allocation System&rdquo;</b> is the bonafide record of project work done by <b>NITHIESH M</b> (Register No: ______________) and <b>[Team Member Name]</b> (Register No: ______________) under my supervision for the mini-project requirement of the Bachelor of Engineering programme during the academic year 2025&ndash;2026.</p>
+
+<p style="margin-top:40pt;">&nbsp;</p>
+
+<table style="border:none;width:100%;font-size:12pt;">
+  <tr>
+    <td style="border:none;width:50%;padding-top:30pt;">__________________________<br><b>Supervisor</b><br>Department of CSE</td>
+    <td style="border:none;width:50%;padding-top:30pt;">__________________________<br><b>Head of the Department</b><br>Department of CSE</td>
+  </tr>
+</table>
+
+<p style="margin-top:34pt;">Submitted for the end-semester viva voce examination held on ______________</p>
+
+<!-- ================= ABSTRACT ================= -->
+<h2 class="center" style="border:none;page-break-before:always;">ABSTRACT</h2>
+
+<p>Finding a free parking space in a college campus is still largely a manual process. Drivers enter a lot without knowing whether a compatible space is free, circle through rows of vehicles, and often block other vehicles while searching. There is no reservation facility, no fair queue when a lot is full, no priority for accessibility-permit holders, and no protection against two users being allotted the same space. A console-based record book or a simple entry/exit register cannot solve these problems because it stores history but does not make allocation decisions.</p>
+
+<p>This project presents a <b>Smart Parking Allocation System</b> built with a Java and Spring Boot backend, a MySQL database, and a plain HTML/CSS/JavaScript dashboard. The system manages three parking lots with twenty-four spaces of three kinds: car, two-wheeler, and accessible. It registers vehicles, validates vehicle&ndash;space compatibility, prevents overlapping reservations, and automatically chooses the best free space. The choice is made by a slot-selection policy that first uses <b>Dijkstra&rsquo;s shortest-path algorithm</b> on a weighted road graph to find the nearest lot from the campus entrance, then prefers the lower floor and the lower space code. A <b>PriorityQueue</b> with a <b>HashMap</b> index implements a waiting list in which accessibility-permit holders are served before standard users and earlier arrivals are served before later ones. Released spaces are re-offered to the queue automatically after the releasing transaction commits.</p>
+
+<p>The backend enforces every business rule. The frontend only fetches data, renders it, and sends commands, so allocation, overlap, permit, and priority logic cannot be bypassed from the browser. MySQL is the source of truth; the in-memory index and waiting heap are rebuilt from the database on startup. Concurrency is handled with <code>SELECT ... FOR UPDATE</code> row locks, <code>READ_COMMITTED</code> isolation, an authoritative overlap re-check inside the lock, and JPA <code>@Version</code> optimistic locking. The project includes a simulated clock so that reservation expiry and fee calculation can be demonstrated without waiting in real time.</p>
+
+<p>The Maven build completes successfully and the automated suite runs <b>12 integration tests with 0 failures and 0 errors</b>. Manual API tests, database checks, and headless-browser UI checks also pass. The report documents the design, implementation, database schema, test cases, results, limitations, and future enhancements, and it explains how the project demonstrates object-oriented programming and core data structures and algorithms.</p>
+
+<p><b>Keywords:</b> smart parking, Spring Boot, MySQL, Dijkstra, PriorityQueue, HashMap, reservation, waiting list, REST API, object-oriented programming.</p>
+
+<!-- ================= TABLE OF CONTENTS ================= -->
+<div class="center" style="font-size:15pt;font-weight:bold;margin:18pt 0 8pt 0;page-break-before:always;">TABLE OF CONTENTS</div>
+
+
+
+<!-- ================= CHAPTER 1 ================= -->
+<h2 class="center" style="border:none;page-break-before:always;">CHAPTER 1<br>PROBLEM ANALYSIS AND DESIGN</h2>
+
+<h3>1.1 Problem Definition</h3>
+
+<h4>1.1.1 Problem Statement</h4>
+<p>In a typical engineering campus, parking is handled by security staff and a manual register. A vehicle is allowed in if a space appears to be free, and the entry is written in a book. This approach has six practical problems:</p>
+<ol>
+  <li><b>No real-time visibility.</b> A driver cannot know how many spaces are free in each lot before entering.</li>
+  <li><b>Blind search and congestion.</b> Vehicles cruise between lots, wasting fuel and time, and create traffic near academic blocks.</li>
+  <li><b>Wrong space type.</b> A car may occupy a two-wheeler bay, or a non-permit vehicle may occupy an accessible bay, because nothing enforces compatibility.</li>
+  <li><b>Double booking.</b> Two users can be promised the same space when entries are recorded on paper or in independent spreadsheets.</li>
+  <li><b>Unfair queueing.</b> When a lot is full there is no ordered waiting list and no priority for accessibility-permit holders.</li>
+  <li><b>No reservation or audit.</b> There is no way to reserve a space in advance, cancel it, record check-in/check-out, or compute a fee consistently.</li>
+</ol>
+<p>The existing console application in the repository records vehicles and parking sessions, but it does not allocate spaces, check overlaps, rank a waiting list, or expose a web interface. A new system is required that makes the allocation decision in software and records it safely in a relational database.</p>
+
+<h4>1.1.2 Project Objectives</h4>
+<ol>
+  <li>Provide a browser dashboard that shows live counts and a visual map of all lots and spaces.</li>
+  <li>Register cars and two-wheelers with an optional accessibility permit and reject duplicate numbers.</li>
+  <li>Automatically allocate the <b>best compatible free space</b> for a requested time window.</li>
+  <li>Use <b>Dijkstra&rsquo;s shortest path</b> on a weighted road graph to prefer the nearest lot from the entrance.</li>
+  <li>Allow advance reservations while preventing space overlaps and vehicle overlaps.</li>
+  <li>Implement a <b>priority waiting list</b> that reconsiders requests when a space is released.</li>
+  <li>Support check-in, check-out, cancellation, expiry with a grace period, and automatic fee calculation.</li>
+  <li>Persist lots, spaces, vehicles, reservations, waiting requests, road segments, and audit events in MySQL.</li>
+  <li>Demonstrate OOP (abstraction, inheritance, polymorphism, encapsulation, composition, strategy) and DSA (HashMap, ArrayList, PriorityQueue, weighted graph, Dijkstra, interval overlap).</li>
+  <li>Protect against concurrent double booking using database transactions and row locks.</li>
+  <li>Deliver automated tests, schema scripts, sample data, API documentation, UML diagrams, and a runnable Maven project.</li>
+</ol>
+
+<h4>1.1.3 Functional and Non-Functional Requirements</h4>
+<p><b>Functional requirements</b></p>
+<table>
+  <tr><th style="width:12%;">ID</th><th>Requirement</th></tr>
+  <tr><td>FR-01</td><td>The system shall display total, available, reserved, and occupied space counts for all lots.</td></tr>
+  <tr><td>FR-02</td><td>The system shall list lots and spaces and allow filtering by lot, space type, status, and search text.</td></tr>
+  <tr><td>FR-03</td><td>The system shall register a vehicle with number, owner name, type, and accessibility permit, and shall reject duplicate numbers.</td></tr>
+  <tr><td>FR-04</td><td>The system shall allow an accessibility permit to be granted or removed and shall re-rank that vehicle&rsquo;s waiting request.</td></tr>
+  <tr><td>FR-05</td><td>The system shall allocate the nearest compatible free space automatically when no preferred space is given.</td></tr>
+  <tr><td>FR-06</td><td>The system shall validate a preferred space for type and permit compatibility before booking.</td></tr>
+  <tr><td>FR-07</td><td>The system shall reject a reservation that overlaps an active reservation for the same space or the same vehicle.</td></tr>
+  <tr><td>FR-08</td><td>The system shall allow a <code>RESERVED</code> booking to be cancelled.</td></tr>
+  <tr><td>FR-09</td><td>The system shall support check-in and check-out and shall calculate the fee on check-out.</td></tr>
+  <tr><td>FR-10</td><td>The system shall expire unclaimed reservations after a configurable grace period.</td></tr>
+  <tr><td>FR-11</td><td>The system shall maintain a priority waiting list and automatically allocate a released space to the highest-priority compatible request.</td></tr>
+  <tr><td>FR-12</td><td>The system shall record an audit event for every reservation, cancellation, check-in, check-out, expiry, and waiting-list action.</td></tr>
+  <tr><td>FR-13</td><td>The system shall provide a simulated clock that can be advanced and reset for demonstration and testing.</td></tr>
+  <tr><td>FR-14</td><td>The system shall expose a JSON REST API with correct HTTP status codes and consistent error bodies.</td></tr>
+</table>
+
+<p><b>Non-functional requirements</b></p>
+<table>
+  <tr><th style="width:12%;">ID</th><th>Requirement</th></tr>
+  <tr><td>NFR-01</td><td>The backend shall be implemented entirely in Java with Spring Boot; no Python, Node.js, or PHP backend is permitted.</td></tr>
+  <tr><td>NFR-02</td><td>Data shall be stored in MySQL/MariaDB with ACID transactions, primary keys, foreign keys, unique constraints, checks, and indexes.</td></tr>
+  <tr><td>NFR-03</td><td>The dashboard shall load within one second for the seeded 24-space dataset on a normal laptop.</td></tr>
+  <tr><td>NFR-04</td><td>Concurrent bookings shall not create a double booking for the same space and overlapping window.</td></tr>
+  <tr><td>NFR-05</td><td>The user interface shall be usable on a desktop browser and shall show clear success and error messages.</td></tr>
+  <tr><td>NFR-06</td><td>The code shall follow a layered architecture with small classes, constructor injection, and no generated boilerplate.</td></tr>
+  <tr><td>NFR-07</td><td>Business rules shall be testable through automated integration tests using an in-memory database.</td></tr>
+  <tr><td>NFR-08</td><td>The application shall run on Windows or Linux with Java 17 and MySQL 8.x or MariaDB 10.4+.</td></tr>
+  <tr><td>NFR-09</td><td>Input shall be validated on the server; database credentials shall not be committed to version control.</td></tr>
+  <tr><td>NFR-10</td><td>The project shall include a README, API reference, UML diagrams, design notes, and test cases.</td></tr>
+</table>
+
+<h3>1.2 SDG Relevance</h3>
+<p>The project aligns primarily with <b>United Nations Sustainable Development Goal 11 &ndash; Sustainable Cities and Communities</b>, especially target 11.2 (safe, affordable, accessible, and sustainable transport systems) and target 11.6 (reducing the adverse environmental impact of cities). Parking search traffic is a measurable contributor to urban congestion and emissions. By telling a driver exactly where to go, the system reduces cruising distance and idling. By reserving accessible bays only for permit holders, it supports inclusive mobility. By replacing paper registers with a database, it reduces paper use and makes records auditable.</p>
+<table>
+  <tr><th style="width:18%;">SDG</th><th>Alignment</th><th>Expected impact</th></tr>
+  <tr><td><b>SDG 11</b><br>Sustainable Cities and Communities</td><td>Smart allocation, real-time availability, reservation, accessible priority</td><td>Shorter search time, less congestion, inclusive access, organised campus mobility</td></tr>
+  <tr><td><b>SDG 9</b><br>Industry, Innovation and Infrastructure</td><td>Digital infrastructure, REST API, database-backed service</td><td>Reusable smart-campus platform that can be extended to more lots and sensors</td></tr>
+  <tr><td><b>SDG 13</b><br>Climate Action</td><td>Reduced cruising and idling; fewer unnecessary vehicle kilometres</td><td>Lower fuel consumption and CO<sub>2</sub> emissions per parking event</td></tr>
+</table>
+
+<h3>1.3 Proposed System and Solution</h3>
+<p>The proposed system is a <b>web-based smart parking allocation platform</b>. A driver opens the dashboard, registers a vehicle once, chooses a start and end time, and optionally chooses a preferred space. The Java backend then performs a fixed pipeline: validate the time window, check that the vehicle has no overlapping booking, filter spaces by type and permit compatibility, remove spaces with overlapping intervals, rank the remainder, lock the chosen rows, re-check the overlap inside the lock, and insert the reservation. The response tells the driver exactly which space and lot were allocated.</p>
+
+<p>The major modules are:</p>
+<ul>
+  <li><b>Vehicle module</b> &ndash; registration, search, duplicate prevention, permit management.</li>
+  <li><b>Allocation module</b> &ndash; compatibility, overlap filtering, Dijkstra-based ranking, strategy pattern.</li>
+  <li><b>Reservation module</b> &ndash; create, cancel, check-in, check-out, expiry, lifecycle rules.</li>
+  <li><b>Waiting-list module</b> &ndash; priority queue, re-ranking, automatic allocation after release.</li>
+  <li><b>Database module</b> &ndash; JPA entities, repositories, schema, indexes, transactions.</li>
+  <li><b>Dashboard module</b> &ndash; counts, lot cards, space grid, forms, tables, filters, messages.</li>
+  <li><b>Demo-support module</b> &ndash; simulated clock, expiry trigger, seeded sample data.</li>
+</ul>
+
+<table>
+  <tr><th>Capability</th><th>Manual register</th><th>Legacy console app</th><th>Proposed system</th></tr>
+  <tr><td>Real-time availability</td><td>No</td><td>No</td><td>Yes, dashboard and API</td></tr>
+  <tr><td>Automatic allocation</td><td>No</td><td>No</td><td>Yes, compatible + nearest</td></tr>
+  <tr><td>Reservation and overlap check</td><td>No</td><td>No</td><td>Yes, space and vehicle</td></tr>
+  <tr><td>Waiting list with priority</td><td>Informal</td><td>No</td><td>Yes, PriorityQueue</td></tr>
+  <tr><td>Accessibility permit rule</td><td>Manual</td><td>No</td><td>Enforced in Java</td></tr>
+  <tr><td>Fee calculation</td><td>Manual</td><td>Basic</td><td>Automatic, rounded up</td></tr>
+  <tr><td>Audit history</td><td>Paper</td><td>File</td><td>Database table</td></tr>
+  <tr><td>Concurrency safety</td><td>None</td><td>None</td><td>Row locks + version</td></tr>
+</table>
+
+<h3>1.4 Java OOP Design</h3>
+<p>The domain model uses real Java inheritance rather than string switches. The main classes and their responsibilities are listed below.</p>
+
+<table>
+  <tr><th style="width:26%;">Class / interface</th><th>Responsibility</th></tr>
+  <tr><td><code>ParkingLot</code></td><td>Lot code, name, address, graph node, and its spaces.</td></tr>
+  <tr><td><code>ParkingSpace</code> (abstract)</td><td>Common space fields and abstract <code>canAccommodate()</code>, <code>requiresPermit()</code>, <code>getKind()</code>.</td></tr>
+  <tr><td><code>CarSpace</code>, <code>TwoWheelerSpace</code>, <code>AccessibleSpace</code></td><td>Concrete compatibility rules for each space type.</td></tr>
+  <tr><td><code>Vehicle</code> (abstract)</td><td>Number, owner, permit, creation time, abstract <code>getKind()</code>.</td></tr>
+  <tr><td><code>CarVehicle</code>, <code>TwoWheelerVehicle</code></td><td>Concrete vehicle kinds mapped by a discriminator column.</td></tr>
+  <tr><td><code>Reservation</code></td><td>Booking window, status, check-in/out timestamps, fee, version.</td></tr>
+  <tr><td><code>WaitingRequest</code></td><td>Durable waiting-list row: window, priority, arrival, status, allocated reservation.</td></tr>
+  <tr><td><code>ParkingEvent</code></td><td>Audit trail entry with type, vehicle, space, lot, message, and fee.</td></tr>
+  <tr><td><code>RoadSegment</code></td><td>Weighted edge of the campus road graph.</td></tr>
+  <tr><td><code>ReservationService</code></td><td>Booking transaction, lifecycle transitions, expiry, row locks.</td></tr>
+  <tr><td><code>ParkingAllocationService</code></td><td>Eligibility filtering, interval checks, policy invocation.</td></tr>
+  <tr><td><code>WaitingListService</code></td><td>PriorityQueue and HashMap index, join, cancel, re-rank, rebuild.</td></tr>
+  <tr><td><code>WaitingListProcessor</code></td><td>Reconsiders the queue after a release in separate transactions.</td></tr>
+  <tr><td><code>TravelTimeService</code></td><td>Builds the weighted graph and runs Dijkstra from the entrance.</td></tr>
+  <tr><td><code>ParkingFeeService</code></td><td>Rate, minimum duration, and ceiling rounding with <code>BigDecimal</code>.</td></tr>
+  <tr><td><code>ClockService</code></td><td>Real time plus an in-memory simulated offset.</td></tr>
+  <tr><td><code>SlotSelectionPolicy</code> (abstract)</td><td>Strategy for ordering eligible spaces.</td></tr>
+  <tr><td><code>NearestAvailableSpacePolicy</code></td><td>Travel time, then floor, then code.</td></tr>
+  <tr><td><code>ParkingIndex</code></td><td>HashMap/ArrayList in-memory interval index for fast pre-checks.</td></tr>
+  <tr><td><code>WeightedGraph</code>, <code>DijkstraShortestPath</code></td><td>Adjacency-list graph and min-heap shortest-path algorithm.</td></tr>
+</table>
+
+<p><b>Abstraction.</b> <code>ParkingSpace</code> declares the behaviour that the rest of the system needs, without exposing how each type decides compatibility.</p>
+<pre>public abstract class ParkingSpace {
+    public abstract boolean canAccommodate(Vehicle vehicle);
+    public abstract boolean requiresPermit();
+    public abstract SpaceKind getKind();
+}</pre>
+
+<p><b>Inheritance.</b> <code>CarSpace</code>, <code>TwoWheelerSpace</code>, and <code>AccessibleSpace</code> extend <code>ParkingSpace</code>; <code>CarVehicle</code> and <code>TwoWheelerVehicle</code> extend <code>Vehicle</code>; <code>NearestAvailableSpacePolicy</code> extends <code>SlotSelectionPolicy</code>. JPA maps the two hierarchies with <code>InheritanceType.SINGLE_TABLE</code> and discriminator columns, so the schema stays small while Java keeps polymorphism.</p>
+
+<p><b>Polymorphism.</b> The allocation service calls <code>space.canAccommodate(vehicle)</code> and lets the JVM dispatch to the correct subclass. Adding an EV-charging space would mean adding one subclass, not editing a long <code>if/else</code> chain.</p>
+
+<p><b>Encapsulation.</b> Entity fields are private; <code>ParkingIndex</code> synchronises map access and returns immutable snapshots; the waiting queue is private and exposed only through ordered views.</p>
+
+<p><b>Composition.</b> A lot <i>has</i> spaces, a reservation <i>has</i> a vehicle and a space, <code>WaitingListService</code> <i>has</i> a queue and a map, and <code>WeightedGraph</code> <i>has</i> an adjacency list.</p>
+
+<p><b>Strategy pattern.</b> <code>SlotSelectionPolicy</code> is an abstract strategy. The default policy orders by Dijkstra time, floor, and code. A different policy can be introduced without touching the allocation service.</p>
+
+<h3>1.5 Data Structures and Algorithms</h3>
+<p>The project deliberately uses a small set of well-understood structures so that each one has a clear role in the demonstration.</p>
+
+<table>
+  <tr><th style="width:30%;">Structure / algorithm</th><th>Where it is used</th><th>Why it is appropriate</th><th>Complexity</th></tr>
+  <tr><td><code>HashMap</code></td><td><code>ParkingIndex</code> maps by space id, vehicle number, and reservation id</td><td>Average constant-time lookup during pre-checks</td><td>O(1) average</td></tr>
+  <tr><td><code>HashMap&lt;Long, ArrayList&lt;ReservationInterval&gt;&gt;</code></td><td>Intervals grouped by space</td><td>Only scan the intervals of the candidate space</td><td>O(1) bucket, O(k) scan</td></tr>
+  <tr><td><code>ArrayList</code></td><td>Ranked candidate list</td><td>Preserves policy order and allows iteration</td><td>O(1) append, O(n) scan</td></tr>
+  <tr><td><code>PriorityQueue</code> (min-heap)</td><td>Dijkstra frontier</td><td>Always expand the nearest known node</td><td>O(log V) insert/poll</td></tr>
+  <tr><td><code>PriorityQueue</code> (max-priority)</td><td>Waiting list</td><td>Highest-priority request is always first</td><td>O(log W) insert/poll</td></tr>
+  <tr><td>Weighted graph (adjacency list)</td><td>Campus roads</td><td>Sparse graph, O(V + E) memory</td><td>O(V + E) memory</td></tr>
+  <tr><td>Dijkstra shortest path</td><td>Nearest lot selection</td><td>Positive road weights, single source</td><td>O((V + E) log V)</td></tr>
+  <tr><td>Half-open interval overlap</td><td>Reservation conflict check</td><td>Back-to-back bookings are allowed</td><td>O(1) per pair</td></tr>
+</table>
+
+<p><b>Dijkstra in the allocation path.</b> The road graph is stored in the <code>road_segments</code> table and loaded into <code>WeightedGraph</code>. The seeded graph is:</p>
+<pre>ENTRANCE --3-- LOT-A
+ENTRANCE --7-- LOT-B
+ENTRANCE --12- LOT-C
+LOT-A ----5-- LOT-B
+LOT-B ----4-- LOT-C
+LOT-A ----9-- LOT-C</pre>
+<p>Running Dijkstra from <code>ENTRANCE</code> gives LOT-A = 3, LOT-B = 7, and LOT-C = <b>11</b>. The direct road to LOT-C is 12 minutes, but the path <code>ENTRANCE &rarr; LOT-B &rarr; LOT-C</code> is 7 + 4 = 11. This is the clearest proof that the implementation computes shortest paths rather than copying a static column.</p>
+
+<p><b>Waiting-list priority.</b> The comparator is:</p>
+<pre>Comparator.comparingInt(WaitingTicket::accessPriority).reversed()
+        .thenComparing(WaitingTicket::arrivalTime)
+        .thenComparing(WaitingTicket::id);</pre>
+<p>Permit holders have priority 1 and standard users priority 0. Ties are broken by arrival time and then by id, so the order is deterministic. The heap gives O(log n) insertion and removal; the accompanying <code>HashMap</code> gives O(1) lookup by request id.</p>
+
+<p><b>Overlap rule.</b> Two intervals overlap when <code>existing.start &lt; requested.end</code> and <code>existing.end &gt; requested.start</code>. This is the standard half-open test. For example, 10:00&ndash;12:00 and 12:00&ndash;14:00 do <i>not</i> overlap, while 10:00&ndash;12:00 and 11:00&ndash;13:00 do. Only <code>RESERVED</code> and <code>CHECKED_IN</code> reservations block a space; cancelled, completed, and expired rows do not.</p>
+
+<p><b>Allocation workflow.</b></p>
+<ol>
+  <li>Validate the requested window and the maximum duration/advance limits.</li>
+  <li>Lock the vehicle row and check that the vehicle has no overlapping active booking.</li>
+  <li>Load all spaces and keep those that satisfy <code>canAccommodate(vehicle)</code>.</li>
+  <li>Remove spaces whose in-memory intervals or database rows overlap the requested window.</li>
+  <li>If a preferred space was supplied, restrict the list to it and fail with 422 if incompatible.</li>
+  <li>Sort the remaining candidates with the nearest-space policy.</li>
+  <li>For each candidate, lock the space row and re-check the overlap authoritatively.</li>
+  <li>Insert the reservation and the audit event, then commit.</li>
+</ol>
+
+<h3>1.6 System Architecture and Methodology</h3>
+<p>The system uses a layered architecture. The browser is a thin client; the Java backend owns every rule; MySQL is the durable store.</p>
+<pre>Browser (HTML + CSS + vanilla JavaScript)
+        |
+        | fetch() JSON over HTTP
+        v
+REST controllers  (com.smartparking.controller)
+        |
+        v
+Service layer     (com.smartparking.service)
+  reservation rules, allocation, waiting list, fee, clock, queries
+        |
+        +---------------------------+
+        |                           |
+        v                           v
+Spring Data JPA repositories   Algorithm package
+  (com.smartparking.repository) (com.smartparking.algorithm)
+        |                           |
+        v                           +-- WeightedGraph + Dijkstra
+MySQL / MariaDB                     +-- PriorityQueue waiting list
+  (source of truth)                 +-- HashMap / ArrayList index</pre>
+
+<p><b>Layer responsibilities.</b> Controllers validate input, call a service, and choose the HTTP status. Services enforce business rules and open transactions. Repositories only query and persist. The algorithm package contains pure data structures and ordering and never touches the database. The frontend renders state and sends commands but never decides which space is &ldquo;best&rdquo;.</p>
+
+<p><b>Methodology.</b> The project was built incrementally: (1) inspect the existing console application, (2) design the schema and domain model, (3) implement repositories and services, (4) add the allocation and waiting-list algorithms, (5) expose REST endpoints, (6) build the dashboard, (7) add tests and documentation, and (8) package and verify the application. Each step was compiled and tested before the next was started. Git was used to keep a recoverable history.</p>
+
+<h3>1.7 Project Planning and Risk Management</h3>
+
+<p><b>Timeline and milestones.</b></p>
+<table>
+  <tr><th style="width:14%;">Week</th><th>Milestone</th><th>Deliverable</th></tr>
+  <tr><td>1</td><td>Requirement study and existing-code inspection</td><td>Problem statement, objectives, feature list</td></tr>
+  <tr><td>2</td><td>Domain and database design</td><td>Entities, schema.sql, sample-data.sql, UML draft</td></tr>
+  <tr><td>3</td><td>Core services and algorithms</td><td>Allocation, Dijkstra, waiting list, reservation lifecycle</td></tr>
+  <tr><td>4</td><td>REST API and error handling</td><td>Controllers, DTOs, validation, global exception handler</td></tr>
+  <tr><td>5</td><td>Frontend dashboard</td><td>index.html, styles.css, app.js, screenshots</td></tr>
+  <tr><td>6</td><td>Testing, documentation, packaging</td><td>12 integration tests, README, API/UML/design/test docs, JAR</td></tr>
+</table>
+
+<p><b>Team responsibilities.</b></p>
+<table>
+  <tr><th style="width:30%;">Member</th><th>Responsibility</th></tr>
+  <tr><td>NITHIESH M</td><td>Backend services, allocation algorithm, database schema, testing</td></tr>
+  <tr><td>[Team Member Name]</td><td>Frontend dashboard, documentation, demonstration and screenshots</td></tr>
+</table>
+
+<p><b>Resources.</b> Java 17 JDK, Maven 3.9+, Spring Boot 3.3.5, MySQL 8.x or MariaDB 10.4 (XAMPP), a browser, Git, and a text editor or IDE. All tools used are free and open source.</p>
+
+<p><b>Risks and mitigation.</b></p>
+<table>
+  <tr><th style="width:30%;">Risk</th><th>Impact</th><th>Mitigation</th></tr>
+  <tr><td>Two users book the same space</td><td>Double booking, inconsistent data</td><td>Vehicle and space row locks, <code>READ_COMMITTED</code>, authoritative re-check, <code>@Version</code></td></tr>
+  <tr><td>Wrong space type allocated</td><td>Policy violation, user complaint</td><td>Compatibility implemented in space subclasses and tested</td></tr>
+  <tr><td>Database unavailable during demo</td><td>Application cannot start</td><td>Seed scripts, clear README, H2 profile for tests, restart instructions</td></tr>
+  <tr><td>Clock-dependent tests are flaky</td><td>False failures</td><td>Injected <code>ClockService</code>, simulated offset, fresh context per test</td></tr>
+  <tr><td>Waiting queue lost on restart</td><td>Lost requests</td><td><code>waiting_requests</code> table rebuilt into the heap on startup</td></tr>
+  <tr><td>Scope creep</td><td>Missed deadline</td><td>Fixed feature list; authentication and payments explicitly out of scope</td></tr>
+  <tr><td>Secrets committed</td><td>Security issue</td><td>Local overrides ignored by <code>.gitignore</code>; no passwords in the repository</td></tr>
+</table>
+
+<p><b>Test planning overview.</b> Tests are layered: integration tests for business rules, manual API tests against MariaDB for the real database path, and headless-browser checks for rendering. The plan covers success, overlap, incompatible type, missing permit, full lot, cancellation, expiry, check-in/check-out, waiting allocation, and priority ordering.</p>
+
+<!-- ================= CHAPTER 2 ================= -->
+<h2 class="center" style="border:none;page-break-before:always;">CHAPTER 2<br>IMPLEMENTATION AND TECHNICAL DEMONSTRATION</h2>
+
+<h3>2.1 Technology Stack</h3>
+<table>
+  <tr><th style="width:24%;">Layer</th><th>Technology</th><th>Version / role</th></tr>
+  <tr><td>Language</td><td>Java</td><td>17 (records, switch expressions, modern collections)</td></tr>
+  <tr><td>Backend framework</td><td>Spring Boot</td><td>3.3.5 &ndash; auto-configuration, embedded Tomcat</td></tr>
+  <tr><td>Web layer</td><td>Spring MVC / REST</td><td>JSON controllers, validation, exception handling</td></tr>
+  <tr><td>Persistence</td><td>Spring Data JPA / Hibernate</td><td>6.5 &ndash; entities, repositories, transactions, locking</td></tr>
+  <tr><td>Database</td><td>MySQL / MariaDB</td><td>8.x / 10.4.32, InnoDB, foreign keys, indexes</td></tr>
+  <tr><td>Driver</td><td>MySQL Connector/J</td><td>JDBC connectivity</td></tr>
+  <tr><td>Validation</td><td>Jakarta Bean Validation</td><td>Field constraints and error details</td></tr>
+  <tr><td>Build</td><td>Apache Maven</td><td>3.9.9 &ndash; dependency management and packaging</td></tr>
+  <tr><td>Test database</td><td>H2</td><td>2.2.224 in MySQL compatibility mode</td></tr>
+  <tr><td>Frontend</td><td>HTML5, CSS3, JavaScript (ES6)</td><td>No framework and no build step; served as static files</td></tr>
+  <tr><td>Browser testing</td><td>Microsoft Edge headless</td><td>DOM and screenshot verification</td></tr>
+  <tr><td>Version control</td><td>Git and GitHub</td><td>Source hosting and commit evidence</td></tr>
+  <tr><td>Environment</td><td>Windows 11, PowerShell, XAMPP</td><td>Development and local database</td></tr>
+</table>
+
+<h3>2.2 Frontend Design and User Interface</h3>
+<p>The dashboard is a single page served by Spring Boot at <code>http://localhost:8080/</code>. It is built from three static files: <code>index.html</code> (structure), <code>css/styles.css</code> (layout and theme), and <code>js/app.js</code> (fetch, render, and actions). There is no React, Angular, or Node build step.</p>
+
+<p><b>Layout.</b> A sticky header shows the application name, a simulated-clock chip, and navigation links. The main area contains:</p>
+<ul>
+  <li><b>Stat cards</b> &ndash; total spaces, available, reserved, occupied, active reservations, waiting list, and lots.</li>
+  <li><b>Lot cards</b> &ndash; one card per lot with a progress bar, travel time from the entrance, and available/reserved/occupied counts.</li>
+  <li><b>Space grid</b> &ndash; a visual card for every space, coloured by status, with lot, type, floor, and permit requirement. Filters by lot, type, status, and search text update the grid without a page reload.</li>
+  <li><b>Vehicle section</b> &ndash; a registration form (number, owner, type, permit) and a searchable vehicle table.</li>
+  <li><b>Reservation section</b> &ndash; a form with vehicle, start, end, and an optional preferred space, plus a reservation table with cancel, check-in, and check-out actions.</li>
+  <li><b>Waiting list</b> &ndash; join form, priority-ordered rows with position and priority badge, cancel and process actions.</li>
+  <li><b>History</b> &ndash; audit events with type, vehicle, space, lot, time, and fee, plus a search box.</li>
+  <li><b>Demo controls</b> &ndash; advance the simulated clock by 15, 60, or 180 minutes, reset it, and trigger the expiry scan.</li>
+  <li><b>Space modal</b> &ndash; details of a clicked space and its current reservation.</li>
+</ul>
+
+<p><b>Validation and interaction.</b> HTML attributes provide immediate hints (required fields, number ranges, date inputs), but the server is authoritative. When the backend returns an error, the JavaScript displays the JSON <code>message</code> and appends any <code>details</code> entries in a red alert; success messages appear in green. The frontend never filters &ldquo;allowed&rdquo; spaces by itself. It sends <code>vehicleId</code>, <code>startTime</code>, <code>endTime</code>, and an optional <code>preferredSpaceId</code>, and displays whatever the backend allocates.</p>
+
+<p><b>Responsive and accessible design.</b> CSS grid and flexbox reflow the cards and tables on narrow screens. Form controls have labels, buttons have descriptive text, and colour is paired with text so that status is not conveyed by colour alone. The page uses a dark theme with sufficient contrast.</p>
+
+<h3>2.3 Database Design and Connectivity</h3>
+<p>The database is named <code>smart_parking</code> and uses InnoDB with <code>utf8mb4</code>. Seven tables model the domain.</p>
+
+<table>
+  <tr><th style="width:20%;">Table</th><th>Purpose</th><th>Keys and constraints</th></tr>
+  <tr><td><code>parking_lots</code></td><td>Three lots and their graph node</td><td>PK <code>id</code>; unique <code>code</code>, unique <code>travel_node</code></td></tr>
+  <tr><td><code>road_segments</code></td><td>Weighted campus road graph</td><td>PK; unique <code>(from_node, to_node)</code>; check <code>travel_minutes &gt; 0</code></td></tr>
+  <tr><td><code>vehicles</code></td><td>Cars and two-wheelers</td><td>PK; unique <code>vehicle_number</code>; discriminator <code>vehicle_kind</code></td></tr>
+  <tr><td><code>parking_spaces</code></td><td>24 spaces of three kinds</td><td>PK; unique <code>code</code>; FK <code>lot_id</code>; check <code>floor_number &gt;= 0</code>; indexes on lot and (lot, floor)</td></tr>
+  <tr><td><code>reservations</code></td><td>Bookings and lifecycle</td><td>PK; unique <code>reservation_code</code>; FKs to vehicle and space; check <code>end_time &gt; start_time</code>; indexes on (space, status, start, end), (vehicle, status, start, end), status; <code>version</code></td></tr>
+  <tr><td><code>waiting_requests</code></td><td>Durable waiting list</td><td>PK; FK to vehicle; checks on window and priority; index on (status, arrival_time); <code>version</code></td></tr>
+  <tr><td><code>parking_events</code></td><td>Audit trail</td><td>PK; indexes on <code>occurred_at</code> and <code>vehicle_number</code></td></tr>
+</table>
+
+<p><b>Entity relationships.</b> One lot has many spaces. One vehicle has many reservations and many waiting requests. One space has many reservations. A waiting request optionally points to the reservation it produced. Parking events are intentionally not linked by a foreign key so that history survives maintenance that removes old reservations; they store the vehicle number, space code, and lot code as text.</p>
+
+<p><b>Connectivity.</b> Spring Data JPA with Hibernate maps the entities to these tables. The connection is configured in <code>application.properties</code>:</p>
+<pre>spring.datasource.url=jdbc:mysql://localhost:3306/smart_parking?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Asia/Kolkata&amp;characterEncoding=utf8
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.open-in-view=false</pre>
+
+<p><b>CRUD operations.</b> Repositories extend <code>JpaRepository</code> and add derived queries such as <code>findByVehicleNumberIgnoreCase</code>, <code>findByStatusOrderByArrivalTimeAsc</code>, and overlap-count queries. Services call these methods inside transactions. Controllers never touch repositories directly.</p>
+
+<p><b>Transactions and concurrency.</b> A booking transaction runs at <code>READ_COMMITTED</code>, locks the vehicle row, locks the candidate space row, re-runs the overlap count inside the lock, and only then inserts. The lock order is always vehicle then space. <code>@Version</code> on <code>Reservation</code> and <code>WaitingRequest</code> catches lost updates. Each waiting-list allocation attempt uses <code>REQUIRES_NEW</code> so that one failure does not roll back a later success.</p>
+
+<p><b>Seed data.</b> <code>database/schema.sql</code> creates the tables and <code>database/sample-data.sql</code> inserts 3 lots, 24 spaces (13 car, 8 two-wheeler, 3 accessible), 6 road segments, 4 demo vehicles, and 1 sample history event. The counts were verified against MariaDB 10.4.32.</p>
+
+<h3>2.4 Implementation of Modules</h3>
+
+<h4>2.4.1 Vehicle management</h4>
+<p><code>VehicleService</code> normalises the vehicle number to uppercase without spaces, checks for a duplicate, and creates the correct subclass through a small factory decision based on <code>VehicleKind</code>. Bean Validation enforces a 4&ndash;20 character number, a non-blank owner name, and a valid enum. A duplicate returns <code>409 Conflict</code>; an invalid enum or blank field returns <code>400 Bad Request</code>. The permit endpoint changes the flag and triggers a waiting-list re-rank.</p>
+
+<h4>2.4.2 Smart allocation</h4>
+<p><code>ParkingAllocationService</code> is the core of the project. It loads the spaces, applies <code>canAccommodate</code>, consults the <code>ParkingIndex</code>, queries the database for overlapping active reservations, and passes the survivors to <code>NearestAvailableSpacePolicy</code>. The policy sorts by travel minutes, floor, and code. The result is an ordered <code>List&lt;ParkingSpace&gt;</code>.</p>
+<pre>public List&lt;ParkingSpace&gt; order(Vehicle vehicle,
+                                List&lt;ParkingSpace&gt; candidates,
+                                Map&lt;Long, Integer&gt; travelMinutesByLotId) {
+    return candidates.stream()
+            .filter(space -&gt; space.canAccommodate(vehicle))
+            .sorted(comparator(travelMinutesByLotId))
+            .toList();
+}</pre>
+<p>The service does not contain a type switch. Compatibility lives in the space subclasses, so the rule is both testable and extensible.</p>
+
+<h4>2.4.3 Reservation lifecycle</h4>
+<p><code>ReservationService</code> implements the state machine:</p>
+<pre>RESERVED --check-in--&gt; CHECKED_IN --check-out--&gt; COMPLETED
+   |                                              
+   +--cancel--&gt; CANCELLED
+   +--grace expired--&gt; EXPIRED</pre>
+<p>Only <code>RESERVED</code> can be cancelled. Check-in opens 30 minutes before the start and is refused after the end. Check-out is allowed only from <code>CHECKED_IN</code> and calculates the fee from the check-in timestamp. Every transition writes a <code>ParkingEvent</code>. The service publishes a <code>ReservationReleasedEvent</code> after cancellation, expiry, or check-out so the waiting list can be reconsidered.</p>
+
+<h4>2.4.4 Waiting list</h4>
+<p><code>WaitingListService</code> keeps a <code>PriorityQueue&lt;WaitingTicket&gt;</code> and a <code>HashMap&lt;Long, WaitingTicket&gt;</code>. A join validates the window, checks for a duplicate request, computes the access priority from the permit, and inserts both the database row and the heap entry. Cancellation removes the row and the heap entry. A permit change rebuilds the heap because changing a key inside a <code>PriorityQueue</code> does not re-heapify it. On startup, all <code>WAITING</code> rows are loaded and the heap is rebuilt, so a restart does not lose the queue.</p>
+
+<h4>2.4.5 Automatic reconsideration</h4>
+<p><code>WaitingListProcessor</code> listens with <code>@TransactionalEventListener(AFTER_COMMIT)</code>. It iterates over a priority-ordered copy of the queue and, for each request, locks the waiting row, expires it if its window has passed, locks the vehicle, and runs the same allocation pipeline as a normal booking. A success marks the request <code>ALLOCATED</code>, stores the reservation id, removes it from the heap, and writes a history event. A failure leaves it queued. A waiting request is never forced into an incompatible or overlapping space.</p>
+
+<h4>2.4.6 Expiry scheduler</h4>
+<p><code>ReservationExpiryJob</code> runs every 30 seconds (configurable). It finds <code>RESERVED</code> bookings whose start plus the grace period is before the simulated now, marks them <code>EXPIRED</code>, writes events, and triggers waiting-list processing. The dashboard also exposes a manual &ldquo;Expire unclaimed now&rdquo; button for a live demonstration.</p>
+
+<h4>2.4.7 Fee calculation</h4>
+<p><code>ParkingFeeService</code> uses <code>BigDecimal</code> and <code>RoundingMode.CEILING</code>. A car is charged &#8377;50 per hour and a two-wheeler &#8377;20 per hour, with a minimum of one hour and part hours rounded up. A 90-minute car stay is therefore charged for 2 hours = &#8377;100.00. The fee is stored on the reservation and copied to the history event.</p>
+
+<h4>2.4.8 Simulated clock</h4>
+<p><code>ClockService</code> stores an offset in minutes and returns <code>realNow().plusMinutes(offset)</code>. Every business rule uses this method: window validation, check-in, expiry, fee duration, waiting expiry, and dashboard status. The offset is in memory, so restarting the application resets it to real time.</p>
+
+<h4>2.4.9 Dashboard and query service</h4>
+<p><code>ParkingQueryService</code> assembles the dashboard, lot, space, reservation, waiting, and history responses. Space status is derived at the simulated now: a <code>CHECKED_IN</code> reservation makes a space <code>OCCUPIED</code>; a <code>RESERVED</code> reservation whose window contains now makes it <code>RESERVED</code>; otherwise it is <code>AVAILABLE</code>. This avoids a stale status column.</p>
+
+<h4>2.4.10 Error handling</h4>
+<p><code>GlobalExceptionHandler</code> converts validation errors, not-found errors, conflicts, business-rule errors, and unexpected exceptions into one JSON shape with <code>timestamp</code>, <code>status</code>, <code>error</code>, <code>message</code>, <code>path</code>, and <code>details</code>. Missing static resources return a clean <code>404</code> instead of a logged <code>500</code>.</p>
+
+<h3>2.5 Complete Working Demonstration</h3>
+<p>The following sequence is the recommended end-to-end demonstration. It exercises every major module and produces visible evidence in the dashboard and in MySQL.</p>
+<ol>
+  <li><b>Start the database and load the schema.</b> Run <code>schema.sql</code> and <code>sample-data.sql</code> in MySQL/MariaDB.</li>
+  <li><b>Start the application.</b> Run <code>mvn spring-boot:run</code> or <code>java -jar target/smart-parking-system-1.0.0.jar</code>. Open <code>http://localhost:8080/</code>.</li>
+  <li><b>Observe the dashboard.</b> The counters show 24 total and 24 available spaces across 3 lots. The travel-time chip shows LOT-A 3 min, LOT-B 7 min, LOT-C 11 min.</li>
+  <li><b>Register a car.</b> Enter a number such as <code>TN55XY9090</code>, owner name, type CAR, and no permit. The vehicle appears in the directory.</li>
+  <li><b>Make a smart reservation.</b> Choose the vehicle and a two-hour window, leave the preferred space empty, and submit. The backend allocates <code>A-C-01</code> in LOT-A, the nearest compatible lot, and the reservation table shows <code>RESERVED</code>.</li>
+  <li><b>Demonstrate overlap prevention.</b> Try to book the same vehicle or the same space for an overlapping window. The API returns <code>409 Conflict</code> and the dashboard shows the reason.</li>
+  <li><b>Demonstrate compatibility.</b> Register a two-wheeler and choose a car space, or choose an accessible space with a non-permit car. The API returns <code>422 Unprocessable Entity</code> with a clear message.</li>
+  <li><b>Check in and check out.</b> Check in the reservation, advance the clock by 90 minutes, and check out. The status becomes <code>COMPLETED</code> and the fee is &#8377;100.00 for a car.</li>
+  <li><b>Demonstrate expiry.</b> Create a booking that starts in one minute, advance the clock past the 15-minute grace period, and run the expiry scan. The reservation becomes <code>EXPIRED</code> and the space is released.</li>
+  <li><b>Demonstrate the waiting list.</b> Fill all compatible spaces for a window, add a waiting request, then cancel a blocking reservation. The waiting request is allocated automatically and disappears from the queue.</li>
+  <li><b>Demonstrate priority.</b> Add a standard car and then a permit car to the waiting list. The permit holder appears at position 1 with priority 1; the standard user is position 2.</li>
+  <li><b>Inspect MySQL.</b> Show the <code>reservations</code>, <code>waiting_requests</code>, and <code>parking_events</code> rows to prove that the UI actions were persisted.</li>
+</ol>
+
+<h4>2.5.1 User Interface and Workflow Evidence (Screenshots)</h4>
+<p>The screenshots below were captured from the running application on 29 October 2026 using headless Microsoft Edge at a 1440-pixel viewport.</p>
+
+<div class="figure">
+  <img width="560" height="622" src="screenshots/dashboard.png" alt="Dashboard overview">
+  <div class="caption">Figure 2.1 &ndash; Dashboard overview: stat cards, lot cards, travel-time chip, and simulated clock.</div>
+</div>
+
+<div class="figure">
+  <img width="560" height="622" src="screenshots/lots.png" alt="Lot cards">
+  <div class="caption">Figure 2.2 &ndash; Lot cards showing capacity, travel time, and available/reserved/occupied counts.</div>
+</div>
+
+<div class="figure">
+  <img width="560" height="622" src="screenshots/spaces.png" alt="Space grid">
+  <div class="caption">Figure 2.3 &ndash; Visual space grid with lot, type, floor, permit requirement, and status filters.</div>
+</div>
+
+<div class="figure">
+  <img width="560" height="622" src="screenshots/vehicles.png" alt="Vehicle registration and directory">
+  <div class="caption">Figure 2.4 &ndash; Vehicle registration form and searchable vehicle directory.</div>
+</div>
+
+<div class="figure">
+  <img width="560" height="622" src="screenshots/reservations.png" alt="Reservation form and table">
+  <div class="caption">Figure 2.5 &ndash; Reservation form with optional preferred space and the reservation action table.</div>
+</div>
+
+<div class="figure">
+  <img width="560" height="622" src="screenshots/waiting.png" alt="Waiting list">
+  <div class="caption">Figure 2.6 &ndash; Priority waiting list with position and access-priority badges.</div>
+</div>
+
+<div class="figure">
+  <img width="560" height="622" src="screenshots/history.png" alt="Parking history">
+  <div class="caption">Figure 2.7 &ndash; Audit history with event type, vehicle, space, lot, time, and fee.</div>
+</div>
+
+<p><b>Database evidence.</b> After the demonstration, the following rows were present in MySQL (values shown are representative of the seeded and test data):</p>
+<table>
+  <tr><th>Table</th><th>Observed rows</th></tr>
+  <tr><td><code>parking_lots</code></td><td>3 (LOT-A, LOT-B, LOT-C)</td></tr>
+  <tr><td><code>parking_spaces</code></td><td>24 (13 car, 8 two-wheeler, 3 accessible)</td></tr>
+  <tr><td><code>road_segments</code></td><td>6</td></tr>
+  <tr><td><code>vehicles</code></td><td>4 seeded, plus any registered during the demo</td></tr>
+  <tr><td><code>reservations</code></td><td>One row per booking, with status, window, timestamps, and fee</td></tr>
+  <tr><td><code>waiting_requests</code></td><td>One row per waiting request, with priority, arrival, and allocation link</td></tr>
+  <tr><td><code>parking_events</code></td><td>One row per reservation, cancellation, check-in, check-out, expiry, and waiting action</td></tr>
+</table>
+
+<!-- ================= CHAPTER 3 ================= -->
+<h2 class="center" style="border:none;page-break-before:always;">CHAPTER 3<br>TESTING, RESULTS AND EVALUATION</h2>
+
+<h3>3.1 Testing and Validation</h3>
+<p>Testing used three complementary layers. <b>Automated integration tests</b> run against H2 in MySQL mode with a fresh Spring context and database for each method. <b>Manual API tests</b> run against MariaDB 10.4.32 through the real HTTP endpoints. <b>Frontend checks</b> load the dashboard in headless Edge and inspect the rendered DOM and screenshots.</p>
+
+<p><b>Automated integration tests.</b> File: <code>src/test/java/com/smartparking/SmartParkingIntegrationTest.java</code>. Latest result: <b>12 tests, 0 failures, 0 errors, 0 skipped; BUILD SUCCESS.</b></p>
+<table>
+  <tr><th style="width:8%;">ID</th><th>Scenario</th><th>Expected result</th><th style="width:10%;">Status</th></tr>
+  <tr><td>AT-01</td><td>Seeded dashboard and lists</td><td>24 spaces, 24 available, 3 lots, 0 active, 0 waiting</td><td>PASS</td></tr>
+  <tr><td>AT-02</td><td>Dijkstra shortest path</td><td>LOT-A 3, LOT-B 7, LOT-C 11 minutes</td><td>PASS</td></tr>
+  <tr><td>AT-03</td><td>Smart allocation for a car</td><td>201, RESERVED, A-C-01, LOT-A</td><td>PASS</td></tr>
+  <tr><td>AT-04</td><td>Space and vehicle overlap</td><td>ConflictException with clear messages</td><td>PASS</td></tr>
+  <tr><td>AT-05</td><td>Incompatible type and missing permit</td><td>BusinessRuleException with clear messages</td><td>PASS</td></tr>
+  <tr><td>AT-06</td><td>Reversed time window</td><td>422, &ldquo;End time must be after start time&rdquo;</td><td>PASS</td></tr>
+  <tr><td>AT-07</td><td>Duplicate vehicle and invalid enum</td><td>409 and 400</td><td>PASS</td></tr>
+  <tr><td>AT-08</td><td>Full car lot, waiting, cancellation</td><td>409 when full; automatic allocation after release</td><td>PASS</td></tr>
+  <tr><td>AT-09</td><td>Waiting-list priority</td><td>Permit holder position 1, standard position 2</td><td>PASS</td></tr>
+  <tr><td>AT-10</td><td>Expiry after grace period</td><td>1 reservation EXPIRED</td><td>PASS</td></tr>
+  <tr><td>AT-11</td><td>Check-in and fee rounding</td><td>COMPLETED, &#8377;100.00 for 90 minutes</td><td>PASS</td></tr>
+  <tr><td>AT-12</td><td>Simulated clock</td><td>Offset 15, then 0 after reset</td><td>PASS</td></tr>
+</table>
+
+<p><b>Manual API tests (MariaDB).</b> Seventeen scenarios were executed through the real HTTP API. Representative cases:</p>
+<table>
+  <tr><th style="width:8%;">ID</th><th>Scenario</th><th>Expected</th><th>Actual</th><th style="width:8%;">Status</th></tr>
+  <tr><td>MT-01</td><td>Run schema and sample data</td><td>No SQL errors; 3/24/6/4/1 counts</td><td>Exit 0; counts match</td><td>PASS</td></tr>
+  <tr><td>MT-03</td><td>Register a car</td><td>201 Created</td><td>201, id 5</td><td>PASS</td></tr>
+  <tr><td>MT-06</td><td>Smart allocation</td><td>201, A-C-01 in LOT-A</td><td>201, A-C-01, LOT-A</td><td>PASS</td></tr>
+  <tr><td>MT-07</td><td>Overlapping vehicle</td><td>409 Conflict</td><td>409 with message</td><td>PASS</td></tr>
+  <tr><td>MT-08</td><td>Two-wheeler in car space</td><td>422 Unprocessable Entity</td><td>422, &ldquo;reserved for cars&rdquo;</td><td>PASS</td></tr>
+  <tr><td>MT-09</td><td>Missing accessibility permit</td><td>422 Unprocessable Entity</td><td>422, permit message</td><td>PASS</td></tr>
+  <tr><td>MT-10</td><td>Unknown vehicle id</td><td>404 Not Found</td><td>404</td><td>PASS</td></tr>
+  <tr><td>MT-12</td><td>Check-in</td><td>200, CHECKED_IN</td><td>200, CHECKED_IN</td><td>PASS</td></tr>
+  <tr><td>MT-13</td><td>Check-out fee</td><td>200, COMPLETED, &#8377;50.00</td><td>200, COMPLETED, 50.00</td><td>PASS</td></tr>
+  <tr><td>MT-14</td><td>Waiting-list priority</td><td>201, position 1, priority 1</td><td>Matches</td><td>PASS</td></tr>
+  <tr><td>MT-15</td><td>Release triggers allocation</td><td>Queue empty; new RESERVED booking</td><td>Matches</td><td>PASS</td></tr>
+  <tr><td>MT-16</td><td>Expiry scan</td><td>200, expired count &ge; 1</td><td>expired = 2</td><td>PASS</td></tr>
+</table>
+
+<p><b>Frontend checks.</b> Headless Edge verified that the page, CSS, and JavaScript load; that 24 space cards and 3 lot cards render; that the counters and travel-time chip are correct; that the waiting list shows a clear empty message; that the modal is hidden initially; and that the favicon request does not produce a server error. All 12 checks passed.</p>
+
+<p><b>Bug and defect correction log.</b></p>
+<table>
+  <tr><th style="width:8%;">ID</th><th>Defect</th><th>Root cause</th><th>Correction</th><th style="width:8%;">Status</th></tr>
+  <tr><td>BUG-01</td><td>Space modal visible on first load</td><td><code>.modal-backdrop</code> CSS overrode the <code>hidden</code> attribute</td><td>Added <code>[hidden] { display: none !important; }</code></td><td>Fixed</td></tr>
+  <tr><td>BUG-02</td><td>Preferred-space dropdown missed spaces after filtering</td><td>Options were built from the filtered grid</td><td>Build options from the full lot snapshot</td><td>Fixed</td></tr>
+  <tr><td>BUG-03</td><td>Missing favicon produced a logged 500</td><td>No handler for missing static resources</td><td>Added a <code>NoResourceFoundException</code> handler returning 404</td><td>Fixed</td></tr>
+</table>
+
+<h3>3.2 Results and Performance Analysis</h3>
+<p>The Maven build completed successfully and produced a runnable JAR. The packaged application started in about <b>6.15 seconds</b> on the test laptop and served the dashboard, CSS, JavaScript, favicon, and REST endpoints without errors.</p>
+<table>
+  <tr><th>Metric</th><th>Observed result</th></tr>
+  <tr><td>Automated tests</td><td>12 run, 0 failures, 0 errors, 0 skipped</td></tr>
+  <tr><td>Build</td><td>BUILD SUCCESS; <code>smart-parking-system-1.0.0.jar</code></td></tr>
+  <tr><td>Startup time</td><td>6.15 seconds</td></tr>
+  <tr><td>Dashboard load</td><td>200 OK; 24 spaces, 3 lots, 24 available</td></tr>
+  <tr><td>Dijkstra result</td><td>LOT-A 3, LOT-B 7, LOT-C 11 minutes</td></tr>
+  <tr><td>Manual API tests</td><td>17 scenarios passed</td></tr>
+  <tr><td>Frontend checks</td><td>12 checks passed</td></tr>
+  <tr><td>Database counts</td><td>3 lots, 24 spaces, 6 roads, 4 vehicles</td></tr>
+</table>
+
+<p><b>Complexity analysis.</b> Vehicle registration is expected O(1) thanks to the unique index. Smart allocation is O(S &middot; I + S log S), where S is the number of compatible spaces and I is the number of intervals per space, because each candidate is scanned and the survivors are sorted. Dijkstra is O((V + E) log V). Waiting-list insertion is O(log W), and processing the whole queue is O(W log W + W &middot; A), where A is the cost of one allocation attempt. The dashboard query is O(S + R). Fee calculation is O(1).</p>
+
+<p><b>Correctness observations.</b> The overlap rule correctly allows back-to-back bookings and rejects partial, contained, and containing overlaps. The vehicle-level check prevents one vehicle from holding two simultaneous bookings in different spaces. The waiting list never allocates an incompatible or overlapping space; it simply leaves the request queued. The Dijkstra result for LOT-C (11 rather than 12) confirms that the graph algorithm, not a static column, drives the nearest-lot decision.</p>
+
+<h3>3.3 Sustainability, Cost and Resource Efficiency</h3>
+<p>The entire stack is free and open source, so the development and deployment cost is effectively zero apart from existing hardware. The application is a single Spring Boot process with an embedded Tomcat server and a small MySQL database; it does not require a paid cloud service, a message broker, or a separate frontend server.</p>
+<table>
+  <tr><th style="width:30%;">Item</th><th>Cost / resource</th><th>Notes</th></tr>
+  <tr><td>Java 17, Spring Boot, Maven</td><td>Free</td><td>Open-source tools</td></tr>
+  <tr><td>MySQL / MariaDB</td><td>Free</td><td>Runs locally or on a campus server</td></tr>
+  <tr><td>Frontend</td><td>Free</td><td>Plain HTML/CSS/JS, no paid UI library</td></tr>
+  <tr><td>Hosting</td><td>Existing laptop or campus VM</td><td>No cloud subscription required</td></tr>
+  <tr><td>Memory footprint</td><td>Modest</td><td>Small dataset; 24 spaces and a compact road graph</td></tr>
+  <tr><td>Paper</td><td>Reduced</td><td>Digital reservations and audit history replace registers</td></tr>
+  <tr><td>Vehicle cruising</td><td>Reduced</td><td>Drivers go directly to the allocated lot</td></tr>
+</table>
+<p>The environmental benefit comes mainly from avoided search traffic: a driver who knows the exact lot and space does not circle the campus. Even a small reduction in idling per vehicle per day accumulates across a semester. The accessibility rule also has a social benefit by protecting bays for permit holders.</p>
+
+<h3>3.4 Limitations and Future Enhancements</h3>
+<table>
+  <tr><th style="width:34%;">Current limitation</th><th>Reason</th><th>Future enhancement</th></tr>
+  <tr><td>Single application instance</td><td>In-memory index and waiting heap are local</td><td>Redis or a shared cache; database-level exclusion constraint</td></tr>
+  <tr><td>No authentication or roles</td><td>Scope kept to the allocation problem</td><td>Spring Security with student, staff, and admin roles</td></tr>
+  <tr><td>Simulated clock resets on restart</td><td>Offset is stored in memory</td><td>Persist the offset for long demos</td></tr>
+  <tr><td>No payment integration</td><td>Out of scope</td><td>UPI or campus wallet integration</td></tr>
+  <tr><td>Manual vehicle entry</td><td>No sensors or cameras</td><td>ANPR camera, RFID, or IoT occupancy sensors</td></tr>
+  <tr><td>Fixed fee rates</td><td>Simple demonstration rule</td><td>Configurable tariffs, peak pricing, monthly passes</td></tr>
+  <tr><td>No mobile app</td><td>Web dashboard only</td><td>Responsive PWA or Android app</td></tr>
+  <tr><td>No live notifications</td><td>Polling dashboard</td><td>WebSocket or push notifications when a space is allocated</td></tr>
+  <tr><td>No analytics</td><td>Audit table only</td><td>Occupancy charts, peak-hour reports, lot utilisation trends</td></tr>
+</table>
+
+<!-- ================= CHAPTER 4 ================= -->
+<h2 class="center" style="border:none;page-break-before:always;">CHAPTER 4<br>GITHUB AND CONCLUSION</h2>
+
+<h3>4.1 GitHub Repository and Version Control</h3>
+
+<h4>4.1.1 Repository Overview and Folder Structure</h4>
+<p><b>Repository:</b> <code>https://github.com/naveenaakash04/mp1</code></p>
+<p><b>Default branch:</b> <code>main</code>. The repository contains the complete Maven project, database scripts, documentation, tests, and static frontend.</p>
+<pre>mp1/
+|-- .gitignore
+|-- README.md
+|-- pom.xml
+|-- database/
+|   |-- schema.sql
+|   `-- sample-data.sql
+|-- docs/
+|   |-- API.md
+|   |-- DESIGN.md
+|   |-- TEST-CASES.md
+|   |-- UML.md
+|   |-- Mini-Project-Report.html
+|   |-- Mini-Project-Report.docx
+|   |-- Mini-Project-Report.pdf
+|   `-- screenshots/
+|-- src/
+    |-- main/
+    |   |-- java/com/smartparking/
+    |   |   |-- SmartParkingApplication.java
+    |   |   |-- algorithm/
+    |   |   |-- config/
+    |   |   |-- controller/
+    |   |   |-- domain/
+    |   |   |-- dto/
+    |   |   |-- event/
+    |   |   |-- exception/
+    |   |   |-- repository/
+    |   |   |-- scheduler/
+    |   |   `-- service/
+    |   `-- resources/
+    |       |-- application.properties
+    |       `-- static/
+    |           |-- index.html
+    |           |-- css/styles.css
+    |           |-- js/app.js
+    |           `-- favicon.svg
+    `-- test/
+        |-- java/com/smartparking/SmartParkingIntegrationTest.java
+        `-- resources/application-test.properties</pre>
+
+<h4>4.1.2 Source Code and Execution Instructions</h4>
+<p><b>Prerequisites:</b> Java 17, Maven 3.9+, MySQL 8.x or MariaDB 10.4+, and a modern browser.</p>
+<p><b>Database setup:</b></p>
+<pre>mysql -u root &lt; database/schema.sql
+mysql -u root &lt; database/sample-data.sql</pre>
+<p><b>Run the application:</b></p>
+<pre>mvn spring-boot:run
+# or
+mvn clean package
+java -jar target/smart-parking-system-1.0.0.jar</pre>
+<p>Open <code>http://localhost:8080/</code>. The default configuration expects MySQL on <code>localhost:3306</code> with database <code>smart_parking</code>, user <code>root</code>, and an empty password. Adjust <code>src/main/resources/application.properties</code> for a different environment.</p>
+<p><b>Run the tests:</b></p>
+<pre>mvn test</pre>
+
+<h4>4.1.3 Commit History and Evidence</h4>
+<p>The project was committed and pushed to the repository. The main commit is:</p>
+<table>
+  <tr><th style="width:22%;">Field</th><th>Value</th></tr>
+  <tr><td>Commit</td><td><code>697f0eb</code></td></tr>
+  <tr><td>Message</td><td>Smart Parking Allocation System - Spring Boot, MySQL, Java</td></tr>
+  <tr><td>Branch</td><td><code>main</code></td></tr>
+  <tr><td>Files</td><td>93 tracked files (build output excluded by <code>.gitignore</code>)</td></tr>
+  <tr><td>Repository</td><td><code>https://github.com/naveenaakash04/mp1</code></td></tr>
+</table>
+<p>The commit includes the complete backend, frontend, schema, sample data, tests, and documentation. The <code>target/</code> directory is intentionally ignored so that compiled classes and the packaged JAR are not stored in version control.</p>
+
+<h3>4.2 Conclusion</h3>
+<p>The Smart Parking Allocation System meets its objective of replacing manual campus parking with a software service that makes an explainable allocation decision. A driver registers once, chooses a time window, and receives the nearest compatible space. The backend enforces type and permit compatibility, prevents overlapping bookings for both the space and the vehicle, ranks a waiting list by accessibility priority and arrival time, and re-offers released spaces automatically. MySQL stores the authoritative state, and the dashboard gives students and staff a clear, live view of every lot.</p>
+
+<p>From an academic perspective, the project demonstrates the requested outcomes directly. <b>OOP</b> is visible in the abstract <code>ParkingSpace</code> and <code>Vehicle</code> hierarchies, the strategy-based <code>SlotSelectionPolicy</code>, and the composition of lots, spaces, reservations, and waiting tickets. <b>DSA</b> is visible in the HashMap index, ArrayList candidate list, PriorityQueue waiting list, weighted adjacency-list graph, Dijkstra shortest path, and half-open interval overlap rule. <b>Database</b> skills are visible in the normalised schema, foreign keys, unique and check constraints, indexes, transactions, row locks, and optimistic version columns. <b>Software engineering</b> skills are visible in the layered architecture, REST API, validation, consistent error handling, automated tests, and documentation.</p>
+
+<p>The system is intentionally scoped for a mini project: it has no authentication, no payment gateway, and no multi-instance cache. Those are natural next steps rather than missing core features. The current implementation is small enough to explain in a viva and complete enough to demonstrate a real end-to-end workflow, which is exactly what the project set out to achieve.</p>
+
+<!-- ================= REFERENCES ================= -->
+<h2 class="center" style="border:none;page-break-before:always;">REFERENCES</h2>
+<ol>
+  <li>Spring Boot Reference Documentation, VMware Tanzu, 2024. <code>https://docs.spring.io/spring-boot/</code></li>
+  <li>Spring Data JPA Reference Documentation, VMware Tanzu, 2024. <code>https://docs.spring.io/spring-data/jpa/</code></li>
+  <li>Hibernate ORM 6.5 User Guide, Red Hat, 2024. <code>https://hibernate.org/orm/documentation/</code></li>
+  <li>MySQL 8.0 Reference Manual, Oracle Corporation, 2024. <code>https://dev.mysql.com/doc/</code></li>
+  <li>Java Platform, Standard Edition 17 API Specification, Oracle Corporation, 2021. <code>https://docs.oracle.com/en/java/javase/17/docs/api/</code></li>
+  <li>Dijkstra, E. W. &ldquo;A Note on Two Problems in Connexion with Graphs.&rdquo; <i>Numerische Mathematik</i>, vol. 1, 1959, pp. 269&ndash;271.</li>
+  <li>Gamma, E., Helm, R., Johnson, R., and Vlissides, J. <i>Design Patterns: Elements of Reusable Object-Oriented Software</i>. Addison-Wesley, 1994.</li>
+  <li>Cormen, T. H., Leiserson, C. E., Rivest, R. L., and Stein, C. <i>Introduction to Algorithms</i>, 3rd ed. MIT Press, 2009.</li>
+  <li>MDN Web Docs, Mozilla Foundation. <code>https://developer.mozilla.org/</code></li>
+  <li>Jakarta Bean Validation 3.0 Specification, Eclipse Foundation, 2020. <code>https://jakarta.ee/specifications/bean-validation/</code></li>
+  <li>Kongu Engineering College, <i>24GEP31 Mini Project Report Guidelines</i>, 2025&ndash;2026.</li>
+</ol>
+
+<!-- ================= APPENDIX ================= -->
+<h2 class="center" style="border:none;page-break-before:always;">APPENDIX (CODE)</h2>
+
+<h3>A.1 Application configuration</h3>
+<pre>spring.application.name=smart-parking-system
+server.port=8080
+
+spring.datasource.url=jdbc:mysql://localhost:3306/smart_parking?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Asia/Kolkata&amp;characterEncoding=utf8
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.hikari.maximum-pool-size=10
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.open-in-view=false
+
+parking.reservation.grace-minutes=15
+parking.reservation.expiry-scan-ms=30000
+parking.reservation.expiry-initial-delay-ms=15000
+parking.reservation.max-duration-hours=24
+parking.reservation.max-advance-days=30
+parking.reservation.past-grace-minutes=5</pre>
+
+<h3>A.2 Dijkstra shortest path</h3>
+<pre>public static Map&lt;String, Integer&gt; shortestDistances(WeightedGraph graph, String source) {
+    Map&lt;String, Integer&gt; distance = new HashMap&lt;&gt;();
+    for (String node : graph.nodes()) {
+        distance.put(node, Integer.MAX_VALUE);
+    }
+    if (!distance.containsKey(source)) {
+        return distance;
+    }
+    distance.put(source, 0);
+
+    PriorityQueue&lt;NodeDistance&gt; minHeap =
+            new PriorityQueue&lt;&gt;(Comparator.comparingInt(NodeDistance::distance));
+    minHeap.add(new NodeDistance(source, 0));
+
+    while (!minHeap.isEmpty()) {
+        NodeDistance current = minHeap.poll();
+        if (current.distance() &gt; distance.get(current.node())) {
+            continue;
+        }
+        for (WeightedGraph.Edge edge : graph.neighbors(current.node())) {
+            int candidate = current.distance() + edge.getWeight();
+            if (candidate &lt; distance.getOrDefault(edge.getTo(), Integer.MAX_VALUE)) {
+                distance.put(edge.getTo(), candidate);
+                minHeap.add(new NodeDistance(edge.getTo(), candidate));
+            }
+        }
+    }
+    return distance;
+}</pre>
+
+<h3>A.3 Waiting-list priority comparator</h3>
+<pre>Comparator.comparingInt(WaitingTicket::accessPriority).reversed()
+        .thenComparing(WaitingTicket::arrivalTime)
+        .thenComparing(WaitingTicket::id);</pre>
+
+<h3>A.4 Overlap query</h3>
+<pre>@Query("""
+        select count(r) from Reservation r
+        where r.space.id = :spaceId
+          and r.status in :statuses
+          and r.startTime &lt; :end
+          and r.endTime &gt; :start
+        """)
+long countOverlapping(Long spaceId, LocalDateTime start, LocalDateTime end,
+                      Collection&lt;ReservationStatus&gt; statuses);</pre>
+
+<h3>A.5 Booking transaction outline</h3>
+<pre>@Transactional(isolation = Isolation.READ_COMMITTED)
+public ReservationResponse create(ReservationRequest request) {
+    windowValidator.validate(request.startTime(), request.endTime());
+    Vehicle vehicle = vehicleRepository.findByIdForUpdate(request.vehicleId())
+            .orElseThrow(() -&gt; new NotFoundException("Vehicle ... was not found"));
+    // reject an overlapping booking for the same vehicle
+    // rank eligible spaces with the nearest-space policy
+    // for each candidate: lock space, re-check overlap, insert reservation and event
+}</pre>
+
+<h3>A.6 Database schema excerpt</h3>
+<pre>CREATE TABLE reservations (
+    id               BIGINT        NOT NULL AUTO_INCREMENT,
+    reservation_code VARCHAR(30)   NOT NULL,
+    vehicle_id       BIGINT        NOT NULL,
+    space_id         BIGINT        NOT NULL,
+    start_time       DATETIME(6)   NOT NULL,
+    end_time         DATETIME(6)   NOT NULL,
+    status           VARCHAR(20)   NOT NULL,
+    checked_in_at    DATETIME(6)   NULL,
+    checked_out_at   DATETIME(6)   NULL,
+    fee              DECIMAL(10, 2) NULL,
+    created_at       DATETIME(6)   NOT NULL,
+    updated_at       DATETIME(6)   NOT NULL,
+    version          BIGINT        NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_reservation_code UNIQUE (reservation_code),
+    CONSTRAINT chk_reservation_window CHECK (end_time &gt; start_time),
+    CONSTRAINT fk_reservation_vehicle FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),
+    CONSTRAINT fk_reservation_space FOREIGN KEY (space_id) REFERENCES parking_spaces (id),
+    INDEX idx_reservation_space_time (space_id, status, start_time, end_time),
+    INDEX idx_reservation_vehicle_time (vehicle_id, status, start_time, end_time),
+    INDEX idx_reservation_status (status)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;</pre>
+
+<h3>A.7 Build and run commands</h3>
+<pre># from the smart-parking-system directory
+mvn clean package
+mvn test
+java -jar target/smart-parking-system-1.0.0.jar
+
+# database
+mysql -u root &lt; database/schema.sql
+mysql -u root &lt; database/sample-data.sql</pre>
+
+</body>
+</html>
+
+
