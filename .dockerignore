@@ -1,0 +1,10 @@
+target
+.git
+.gitignore
+.idea
+.vscode
+*.log
+docs
+database
+README.md
+railway.json
