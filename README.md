@@ -4,6 +4,10 @@ A complete Smart Parking Allocation System mini-project built with **Java 17 + S
 
 > The frontend only fetches data and sends commands. Allocation, permit checks, overlap detection, waiting-list priority and fee calculation are all implemented in Java.
 
+**Live demo (static GitHub Pages build):** https://naveenaakash04.github.io/mp1/
+
+The Pages build runs the same dashboard with an in-browser mock backend, so data is stored in `localStorage` instead of MySQL. Use the **Reset demo** button to restore the seeded data. The full Java/MySQL version is still the reference implementation in `src/`.
+
 ---
 
 ## 1. Features
