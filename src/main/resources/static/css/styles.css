@@ -518,6 +518,56 @@ input[type="checkbox"] {
 
 /* ------------------------------- space grid ------------------------------ */
 
+.space-groups {
+    display: grid;
+    gap: 24px;
+}
+
+.space-group {
+    display: grid;
+    gap: 12px;
+}
+
+.space-group-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+}
+
+.space-group-heading h3 {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+}
+
+.space-group-heading .space-icon {
+    font-size: 1rem;
+}
+
+.space-group-car .space-group-heading { border-bottom-color: rgba(123, 184, 255, 0.4); }
+.space-group-two_wheeler .space-group-heading { border-bottom-color: rgba(255, 196, 92, 0.4); }
+.space-group-accessible .space-group-heading { border-bottom-color: rgba(75, 227, 163, 0.4); }
+
+.space-table tbody tr {
+    cursor: pointer;
+}
+
+.space-table tbody tr:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+}
+
+.space-table .badge {
+    min-width: 74px;
+    justify-content: center;
+}
+
 .space-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));

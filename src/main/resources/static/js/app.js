@@ -483,22 +483,64 @@
             return;
         }
 
-        container.innerHTML = state.spaces.map((space) => {
-            const status = String(space.status || 'AVAILABLE').toLowerCase();
-            const active = space.activeVehicleNumber
-                ? `Vehicle ${space.activeVehicleNumber}`
-                : (space.requiresPermit ? 'Accessibility permit required' : 'No permit required');
+        const typeOrder = ['CAR', 'TWO_WHEELER', 'ACCESSIBLE'];
+        const groups = new Map();
+        state.spaces.forEach((space) => {
+            const type = space.type || 'CAR';
+            if (!groups.has(type)) {
+                groups.set(type, []);
+            }
+            groups.get(type).push(space);
+        });
+
+        const types = [
+            ...typeOrder.filter((type) => groups.has(type)),
+            ...[...groups.keys()].filter((type) => !typeOrder.includes(type))
+        ];
+
+        container.innerHTML = types.map((type) => {
+            const spaces = groups.get(type);
+            const rows = spaces.map((space) => {
+                const status = String(space.status || 'AVAILABLE').toLowerCase();
+                const occupant = space.activeVehicleNumber
+                    ? escapeHtml(space.activeVehicleNumber)
+                    : (space.requiresPermit ? 'Permit required' : 'No permit required');
+                return `
+                    <tr class="space-row" data-space-id="${space.id}" tabindex="0">
+                        <td><strong>${escapeHtml(space.code)}</strong></td>
+                        <td>${escapeHtml(space.lotCode)}</td>
+                        <td>Floor ${space.floorNumber}</td>
+                        <td><span class="badge badge-${status}">${escapeHtml(humanize(space.status))}</span></td>
+                        <td>${occupant}</td>
+                        <td>${space.travelMinutes >= 9999 ? 'Unreachable' : `${space.travelMinutes} min`}</td>
+                    </tr>`;
+            }).join('');
+
             return `
-                <button type="button" class="space-card ${status}" data-space-id="${space.id}">
-                    <div class="space-top">
-                        <span class="space-icon" aria-hidden="true">${spaceIcon(space.type)}</span>
-                        <span class="space-status ${status}">${escapeHtml(humanize(space.status))}</span>
+                <section class="space-group space-group-${type.toLowerCase()}">
+                    <div class="space-group-heading">
+                        <h3>
+                            <span class="space-icon" aria-hidden="true">${spaceIcon(type)}</span>
+                            ${escapeHtml(typeLabel(type))} spaces
+                        </h3>
+                        <span class="pill">${spaces.length} space${spaces.length === 1 ? '' : 's'}</span>
                     </div>
-                    <span class="space-code">${escapeHtml(space.code)}</span>
-                    <span class="space-sub">${escapeHtml(space.lotCode)} · ${escapeHtml(typeLabel(space.type))} · Floor ${space.floorNumber}</span>
-                    <span class="space-sub">${escapeHtml(active)}</span>
-                    <span class="space-sub">${space.travelMinutes >= 9999 ? 'Unreachable' : `${space.travelMinutes} min walk`}</span>
-                </button>`;
+                    <div class="table-wrap">
+                        <table class="space-table">
+                            <thead>
+                            <tr>
+                                <th>Space</th>
+                                <th>Lot</th>
+                                <th>Floor</th>
+                                <th>Status</th>
+                                <th>Vehicle / permit</th>
+                                <th>Walk</th>
+                            </tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                </section>`;
         }).join('');
     }
 
@@ -996,9 +1038,20 @@
         });
 
         $('spaceGrid').addEventListener('click', (event) => {
-            const card = event.target.closest('button[data-space-id]');
+            const card = event.target.closest('[data-space-id]');
             if (card) {
                 openSpaceModal(card.getAttribute('data-space-id'));
+            }
+        });
+
+        $('spaceGrid').addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter' && event.key !== ' ') {
+                return;
+            }
+            const row = event.target.closest('tr[data-space-id]');
+            if (row) {
+                event.preventDefault();
+                openSpaceModal(row.getAttribute('data-space-id'));
             }
         });
 
